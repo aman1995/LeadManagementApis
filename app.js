@@ -3,11 +3,22 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+var leadsRouter = require('./routes/leads');
+const {database} = require('./config/db');
 var app = express();
+const mongoose =require('mongoose');
+const { MongoMemoryServer } =require('mongodb-memory-server');
+
+//connect to db
+mongoose.connect(database);
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+  console.log('Connected to MongoDB');
+});
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/api', leadsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -36,6 +48,6 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-});
+}); 
 
 module.exports = app;
