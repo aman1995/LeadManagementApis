@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Joi = require('joi');
 
 const Lead =  mongoose.model('Lead', new mongoose.Schema({
-
+      
   first_name : {
       type : String,
       required : true
@@ -24,7 +24,6 @@ const Lead =  mongoose.model('Lead', new mongoose.Schema({
   location_type : {
       type: String,
       enum:['Country','City','Zip']
-      //required : true
   },
   location_string : {
       type : String,
